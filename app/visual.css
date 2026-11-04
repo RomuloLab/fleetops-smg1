@@ -1,0 +1,412 @@
+/*
+ * FleetOps · camada visual (estilo do portfólio)
+ * ------------------------------------------------
+ * Somente aparência. Carregada por último em app/layout.tsx e sobrepõe
+ * globals.css / theme.css sem alterar classes, markup ou comportamento.
+ * A paleta é a do FleetOps (tinta #252d3b, amarelo #ffe600, painéis azul-ardósia).
+ *
+ * Os seletores usam o prefixo `html:root` para ter a mesma especificidade das
+ * regras do tema escuro (html[data-theme="dark"] .x) e vencer por ordem.
+ */
+
+/* ---------- Tokens ---------- */
+:root {
+  --fo-font-sans: "Geist", "Inter", "Segoe UI", Arial, sans-serif;
+  --fo-font-mono: "Geist Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+  --fo-font-serif: "Instrument Serif", Georgia, serif;
+  --fo-ease: cubic-bezier(0.22, 1, 0.36, 1);
+  --fo-radius: 18px;
+  --fo-radius-sm: 12px;
+
+  --fo-bg-1: #f7f8fa;
+  --fo-bg-2: #eef1f6;
+  --fo-dot: rgb(37 45 59 / 0.07);
+  --fo-blob-a: rgb(255 230 0 / 0.22);
+  --fo-blob-b: rgb(114 164 237 / 0.16);
+  --fo-glass: rgb(255 255 255 / 0.66);
+  --fo-glass-strong: rgb(255 255 255 / 0.84);
+  --fo-glass-border: rgb(37 45 59 / 0.09);
+  --fo-glass-highlight: rgb(255 255 255 / 0.9);
+  --fo-shadow: 0 1px 0 rgb(255 255 255 / 0.6) inset, 0 18px 50px -28px rgb(34 51 75 / 0.28);
+  --fo-shadow-lift: 0 1px 0 rgb(255 255 255 / 0.6) inset, 0 26px 60px -26px rgb(34 51 75 / 0.38);
+  --fo-halo: 0 0 0 1px rgb(255 230 0 / 0.55), 0 10px 32px -8px rgb(214 190 0 / 0.55), 0 26px 70px -24px rgb(255 230 0 / 0.55);
+  --fo-focus: #252d3b;
+  --fo-label: #6f7b8e;
+  --fo-ribbon-a: rgb(255 230 0 / 0.32);
+  --fo-ribbon-b: rgb(114 164 237 / 0.28);
+  --fo-grain-opacity: 0.05;
+}
+
+html[data-theme="dark"] {
+  --fo-bg-1: #0c131d;
+  --fo-bg-2: #0f1723;
+  --fo-dot: rgb(255 255 255 / 0.06);
+  --fo-blob-a: rgb(255 230 0 / 0.1);
+  --fo-blob-b: rgb(114 164 237 / 0.14);
+  --fo-glass: rgb(23 34 49 / 0.62);
+  --fo-glass-strong: rgb(23 34 49 / 0.86);
+  --fo-glass-border: rgb(255 255 255 / 0.09);
+  --fo-glass-highlight: rgb(255 255 255 / 0.06);
+  --fo-shadow: 0 1px 0 rgb(255 255 255 / 0.05) inset, 0 24px 60px -30px rgb(0 0 0 / 0.75);
+  --fo-shadow-lift: 0 1px 0 rgb(255 255 255 / 0.06) inset, 0 30px 70px -28px rgb(0 0 0 / 0.85);
+  --fo-halo: 0 0 0 1px rgb(255 230 0 / 0.5), 0 10px 32px -8px rgb(255 230 0 / 0.4), 0 30px 80px -24px rgb(255 230 0 / 0.3);
+  --fo-focus: #ffe600;
+  --fo-label: #9fb0c6;
+  --fo-ribbon-a: rgb(255 230 0 / 0.12);
+  --fo-ribbon-b: rgb(114 164 237 / 0.26);
+  --fo-grain-opacity: 0.06;
+}
+
+/* ---------- Base: fontes, fundo com grade de pontos, grain ---------- */
+html:root body {
+  font-family: var(--fo-font-sans);
+  font-feature-settings: "ss01", "cv11";
+  letter-spacing: -0.005em;
+  background-color: var(--fo-bg-1);
+  background-image:
+    radial-gradient(var(--fo-dot) 1px, transparent 1px),
+    radial-gradient(900px 520px at 88% -6%, var(--fo-blob-a), transparent 62%),
+    radial-gradient(800px 560px at -8% 108%, var(--fo-blob-b), transparent 60%),
+    linear-gradient(180deg, var(--fo-bg-1), var(--fo-bg-2));
+  background-size: 24px 24px, auto, auto, auto;
+  background-attachment: fixed;
+}
+html:root body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 2147483000;
+  pointer-events: none;
+  opacity: var(--fo-grain-opacity);
+  mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+html:root ::selection { background: #ffe600; color: #252d3b; }
+
+html:root :is(button, a, input, textarea, select, summary):focus-visible {
+  outline: 2px solid var(--fo-focus);
+  outline-offset: 3px;
+  box-shadow: 0 0 0 6px rgb(255 230 0 / 0.28);
+}
+
+/* ---------- Tipografia ---------- */
+html:root :is(h1, h2, h3) { letter-spacing: -0.03em; }
+html:root .page-heading h1,
+html:root .carrier-heading h1 { font-weight: 700; letter-spacing: -0.045em; }
+html:root .access-copy h1 { font-weight: 700; letter-spacing: -0.05em; line-height: 1.02; }
+
+/* Palavra em serifa itálica (assinatura do portfólio) */
+html:root .access-copy h1 span {
+  font-family: var(--fo-font-serif);
+  font-style: italic;
+  font-weight: 400;
+  letter-spacing: -0.01em;
+  font-size: 1.12em;
+  background: linear-gradient(transparent 72%, rgb(255 230 0 / 0.85) 0);
+  padding-right: 0.12em;
+}
+html[data-theme="dark"]:root .access-copy h1 span {
+  background: linear-gradient(transparent 76%, rgb(255 230 0 / 0.45) 0);
+}
+html:root :is(.page-heading, .carrier-heading) h1 > span {
+  font-family: var(--fo-font-serif);
+  font-style: italic;
+  font-weight: 400;
+  color: #c3ae00;
+}
+
+/* Labels em mono com tracking aberto */
+html:root :is(.eyebrow, .sidebar-section, .stela-eyebrow, .sidebar-cycle small, .live-label, .secure-label, .manager-login-tag, .new-tab-badge, .summary-date),
+html:root th {
+  font-family: var(--fo-font-mono);
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
+}
+html:root .eyebrow { font-size: 10px; color: var(--fo-label); }
+html:root th { font-size: 9.5px; letter-spacing: 0.12em; }
+html:root .eyebrow::before {
+  content: "";
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  margin-right: 8px;
+  border-radius: 50%;
+  background: #ffe600;
+  box-shadow: 0 0 0 3px rgb(255 230 0 / 0.22);
+  vertical-align: 1px;
+}
+
+/* Números com dígitos tabulares */
+html:root :is(.metric-value, .number-cell, .total-cell, .count-badge, .nav-count, .progress-number, .summary-total, .response-counts strong) {
+  font-variant-numeric: tabular-nums;
+}
+html:root .metric-value { font-weight: 700; letter-spacing: -0.05em; }
+
+/* ---------- Superfícies de vidro ---------- */
+html:root :is(.form-card, .table-panel, .insight-card, .link-card, .metric, .access-card, .carrier-identity, .invalid-card, .scheduling-history, .scheduling-notification, .alert-settings-message, .registration-preview, .share-card, .modal-option, .sidebar-cycle) {
+  background: var(--fo-glass);
+  border: 1px solid var(--fo-glass-border);
+  border-radius: var(--fo-radius);
+  box-shadow: var(--fo-shadow);
+  backdrop-filter: blur(18px) saturate(140%);
+  -webkit-backdrop-filter: blur(18px) saturate(140%);
+  transition: transform 0.45s var(--fo-ease), box-shadow 0.45s var(--fo-ease), border-color 0.25s, background-color 0.25s;
+}
+html:root .access-card { border-radius: 24px; background: var(--fo-glass-strong); }
+html:root .sidebar-cycle { border-radius: var(--fo-radius-sm); }
+html:root .share-card { border-style: dashed; }
+
+/* Cartões com hover "satisfatório" */
+html:root :is(.metric, .link-card, .insight-card, .modal-option):hover {
+  transform: translateY(-3px);
+  box-shadow: var(--fo-shadow-lift);
+}
+html:root .metric.featured {
+  background: linear-gradient(150deg, #fff36b 0%, #ffe600 55%, #f5d800 100%);
+  border-color: rgb(214 190 0 / 0.6);
+  box-shadow: var(--fo-halo);
+}
+html:root .metric.featured:hover { box-shadow: var(--fo-halo), 0 30px 80px -30px rgb(214 190 0 / 0.7); }
+
+/* Sidebar e header em vidro */
+html:root .sidebar {
+  background: var(--fo-glass-strong);
+  border-right: 1px solid var(--fo-glass-border);
+  backdrop-filter: blur(22px) saturate(150%);
+  -webkit-backdrop-filter: blur(22px) saturate(150%);
+}
+@media (min-width: 1021px) {
+  html:root .dashboard-header { position: sticky; top: 0; z-index: 5; }
+}
+html:root .dashboard-header {
+  background: color-mix(in srgb, var(--fo-glass-strong) 88%, transparent);
+  border-bottom: 1px solid var(--fo-glass-border);
+  backdrop-filter: blur(22px) saturate(150%);
+  -webkit-backdrop-filter: blur(22px) saturate(150%);
+}
+html:root .access-page {
+  background: transparent;
+  border-top: 0;
+}
+html:root .access-page::before {
+  content: "";
+  position: fixed;
+  inset: 0 0 auto 0;
+  height: 3px;
+  z-index: 20;
+  background: linear-gradient(90deg, transparent, #ffe600 30%, #ffe600 70%, transparent);
+  box-shadow: 0 0 24px 2px rgb(255 230 0 / 0.55);
+}
+
+/* Faixas de luz suaves atrás do login e do portal da transportadora (CSS puro) */
+html:root :is(.manager-login-page, .carrier-page) { position: relative; isolation: isolate; overflow-x: clip; }
+html:root :is(.manager-login-page, .carrier-page)::after {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  left: -20%;
+  right: -20%;
+  top: 38%;
+  height: 340px;
+  pointer-events: none;
+  background:
+    linear-gradient(100deg, transparent 18%, var(--fo-ribbon-a) 42%, var(--fo-ribbon-b) 58%, transparent 80%);
+  filter: blur(60px);
+  transform: rotate(-8deg);
+  animation: fo-ribbon 18s ease-in-out infinite alternate;
+}
+@keyframes fo-ribbon {
+  from { transform: rotate(-8deg) translate3d(-4%, 0, 0); }
+  to { transform: rotate(-5deg) translate3d(4%, -6%, 0); }
+}
+
+/* ---------- Botões em pílula ---------- */
+html:root .button {
+  border-radius: 999px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  transition: transform 0.35s var(--fo-ease), box-shadow 0.35s var(--fo-ease), background-color 0.2s, border-color 0.2s, filter 0.2s;
+}
+html:root .button:active:not(:disabled) { transform: scale(0.97); }
+html:root .button.primary {
+  background: #ffe600;
+  color: #252d3b;
+  box-shadow: 0 8px 26px -12px rgb(214 190 0 / 0.9);
+}
+html:root .button.primary:hover:not(:disabled) {
+  filter: none;
+  transform: translateY(-2px);
+  box-shadow: 0 0 0 4px rgb(255 230 0 / 0.22), 0 16px 40px -12px rgb(214 190 0 / 0.95);
+}
+html:root .button.secondary {
+  background: var(--fo-glass);
+  border-color: var(--fo-glass-border);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+html:root .button.secondary:hover:not(:disabled) {
+  filter: none;
+  transform: translateY(-2px);
+  border-color: rgb(37 45 59 / 0.22);
+  box-shadow: var(--fo-shadow-lift);
+}
+html[data-theme="dark"]:root .button.secondary:hover:not(:disabled) { border-color: rgb(255 255 255 / 0.22); }
+
+html:root .icon-button {
+  border-radius: 999px;
+  background: var(--fo-glass);
+  border-color: var(--fo-glass-border);
+  transition: transform 0.35s var(--fo-ease), box-shadow 0.35s var(--fo-ease), background-color 0.2s;
+}
+html:root .icon-button:hover:not(:disabled) { filter: none; transform: translateY(-2px); box-shadow: var(--fo-shadow-lift); }
+
+/* ---------- Navegação ---------- */
+html:root .nav-item {
+  border-radius: 999px;
+  padding-inline: 14px;
+  transition: background-color 0.2s, color 0.2s, transform 0.35s var(--fo-ease), box-shadow 0.35s var(--fo-ease);
+}
+html:root .nav-item:hover:not(.active) { background: rgb(37 45 59 / 0.05); transform: translateX(2px); filter: none; }
+html[data-theme="dark"]:root .nav-item:hover:not(.active) { background: rgb(255 255 255 / 0.05); }
+html:root .nav-item.active {
+  background: rgb(255 230 0 / 0.18);
+  box-shadow: inset 0 0 0 1px rgb(214 190 0 / 0.35), 0 10px 30px -16px rgb(214 190 0 / 0.8);
+}
+html[data-theme="dark"]:root .nav-item.active {
+  background: rgb(255 230 0 / 0.12);
+  box-shadow: inset 0 0 0 1px rgb(255 230 0 / 0.28), 0 10px 30px -14px rgb(255 230 0 / 0.45);
+}
+html:root :is(.nav-count, .count-badge, .new-tab-badge) {
+  font-family: var(--fo-font-mono);
+  border-radius: 999px;
+  padding-inline: 7px;
+}
+
+html:root .brand-symbol {
+  border-radius: 12px;
+  box-shadow: 0 0 0 1px rgb(214 190 0 / 0.5), 0 8px 22px -8px rgb(214 190 0 / 0.9);
+  transition: transform 0.6s var(--fo-ease);
+}
+html:root .brand:hover .brand-symbol { transform: rotate(-8deg) scale(1.05); }
+html:root .brand-word { letter-spacing: -0.055em; }
+
+/* Abas, filtros e pílulas */
+html:root .filter-tabs button { border-radius: 999px; padding-inline: 11px; transition: background-color 0.2s, color 0.2s; }
+html:root :is(.cycle-pill, .status-badge, .ambulance-badge, .fixed-fleet-badge, .sdd-calendar-badge) {
+  border-radius: 999px;
+}
+html:root .cycle-pill {
+  font-family: var(--fo-font-mono);
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  background: var(--fo-glass);
+  border-color: var(--fo-glass-border);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+html:root .status-badge { padding: 4px 9px; font-weight: 600; }
+html:root .registration-tabs button { border-radius: 999px; }
+html:root .carrier-tabs > button { transition: color 0.2s, border-color 0.3s var(--fo-ease); }
+
+/* Pontos de status com pulso */
+html:root :is(.green-dot, .stela-context-dot) { box-shadow: 0 0 0 0 rgb(32 164 119 / 0.5); animation: fo-pulse 2.2s ease-out infinite; }
+html:root .yellow-dot { box-shadow: 0 0 0 3px rgb(255 230 0 / 0.25); }
+@keyframes fo-pulse {
+  0% { box-shadow: 0 0 0 0 rgb(32 164 119 / 0.5); }
+  70% { box-shadow: 0 0 0 7px rgb(32 164 119 / 0); }
+  100% { box-shadow: 0 0 0 0 rgb(32 164 119 / 0); }
+}
+
+/* ---------- Campos ---------- */
+html:root :is(.field-label input, .field-label textarea, .date-picker, .cycle-picker, .cycle-select, .search-input, .ambulance-releaser-field select, .modal-input, .email-code-input input) {
+  border-radius: var(--fo-radius-sm);
+  transition: border-color 0.25s, box-shadow 0.35s var(--fo-ease), background-color 0.25s;
+}
+html:root .search-input { border-radius: 999px; padding-inline: 12px; }
+html:root :is(.field-label input, .field-label textarea, .modal-input input):focus,
+html:root :is(.date-picker, .cycle-picker, .search-input, .cycle-select):focus-within {
+  border-color: rgb(214 190 0 / 0.8);
+  box-shadow: 0 0 0 4px rgb(255 230 0 / 0.2), 0 12px 30px -16px rgb(214 190 0 / 0.7);
+  outline: none;
+}
+
+/* ---------- Tabelas ---------- */
+html:root th { background: transparent; }
+html:root tbody tr { transition: background-color 0.2s; }
+html:root tbody tr:hover td { background: rgb(37 45 59 / 0.025); }
+html[data-theme="dark"]:root tbody tr:hover td { background: rgb(255 255 255 / 0.03); }
+html:root .carrier-logo { border-radius: 10px; }
+
+/* ---------- Avisos ---------- */
+html:root :is(.notice, .dashboard-alert, .closed-banner, .links-intro, .scheduling-setup, .scheduling-alert-guide, .carrier-status-guide, .calendar-note) {
+  border-radius: 14px;
+}
+html:root .form-summary {
+  border-radius: var(--fo-radius);
+  background: linear-gradient(160deg, #2c3a4d 0%, #222d3c 100%);
+  box-shadow: 0 30px 70px -30px rgb(34 51 75 / 0.7), 0 0 0 1px rgb(255 255 255 / 0.04) inset;
+}
+html[data-theme="dark"]:root .form-summary {
+  background: linear-gradient(160deg, #1f2c40 0%, #18222f 100%);
+  box-shadow: 0 30px 70px -30px rgb(0 0 0 / 0.9), 0 0 0 1px rgb(255 255 255 / 0.06) inset;
+}
+html:root :is(.small-icon, .step-number, .lock-icon, .share-icon) { border-radius: 12px; }
+
+/* ---------- Diálogos ---------- */
+html:root dialog.response-dialog {
+  border-radius: 24px;
+  background: var(--fo-glass-strong);
+  border: 1px solid var(--fo-glass-border);
+  backdrop-filter: blur(24px) saturate(150%);
+  -webkit-backdrop-filter: blur(24px) saturate(150%);
+  box-shadow: 0 40px 120px -30px rgb(34 51 75 / 0.55);
+}
+html[data-theme="dark"]:root dialog.response-dialog { box-shadow: 0 40px 120px -30px rgb(0 0 0 / 0.9); }
+html:root dialog.response-dialog[open] { animation: fo-dialog-in 0.45s var(--fo-ease); }
+html:root dialog.response-dialog::backdrop {
+  background: rgb(15 23 35 / 0.45);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+}
+@keyframes fo-dialog-in {
+  from { opacity: 0; transform: translateY(16px) scale(0.97); }
+  to { opacity: 1; transform: none; }
+}
+
+/* ---------- Stela ---------- */
+html:root :is(.stela-panel, .stela-invitation) {
+  background: var(--fo-glass-strong);
+  border-color: var(--fo-glass-border);
+  backdrop-filter: blur(24px) saturate(150%);
+  -webkit-backdrop-filter: blur(24px) saturate(150%);
+}
+html:root .stela-panel { border-radius: 24px; box-shadow: 0 40px 120px -30px rgb(34 51 75 / 0.5); }
+html[data-theme="dark"]:root .stela-panel { box-shadow: 0 40px 120px -30px rgb(0 0 0 / 0.9); }
+html:root .stela-composer { border-radius: 16px; }
+html:root .stela-composer:focus-within { border-color: rgb(214 190 0 / 0.8); box-shadow: 0 0 0 4px rgb(255 230 0 / 0.18); }
+
+/* ---------- Tema: interruptor ---------- */
+html:root .theme-toggle-thumb { box-shadow: 0 0 0 1px rgb(214 190 0 / 0.4), 0 6px 18px -4px rgb(214 190 0 / 0.8); transition: transform 0.45s var(--fo-ease); }
+
+/* ---------- Entrada suave do conteúdo ---------- */
+html:root :is(.dashboard-body, .access-layout, .carrier-main) { animation: fo-rise 0.6s var(--fo-ease) both; }
+@keyframes fo-rise {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: none; }
+}
+
+/* Navegadores sem backdrop-filter: vidro vira superfície opaca */
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  html:root :is(.form-card, .table-panel, .insight-card, .link-card, .metric, .access-card, .sidebar, .dashboard-header, .stela-panel, dialog.response-dialog) {
+    background: var(--panel, #fff);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html:root :is(.manager-login-page, .carrier-page)::after,
+  html:root :is(.green-dot, .stela-context-dot),
+  html:root :is(.dashboard-body, .access-layout, .carrier-main),
+  html:root dialog.response-dialog[open] { animation: none; }
+  html:root :is(.metric, .link-card, .insight-card, .modal-option, .button, .icon-button, .nav-item):hover { transform: none; }
+}
