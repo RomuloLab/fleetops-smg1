@@ -79,7 +79,7 @@ Não há alteração de segredos, cópia de banco ou criação de outro Site nes
 - `scripts/check-deployment.mjs`: testes sem serviços reais.
 - `app/api/fleetops-release/route.ts`: metadados públicos da versão.
 
-O job de validação recebe somente leitura de conteúdo. O job de solicitação usa o `GITHUB_TOKEN` efêmero, limitado a leitura de conteúdo/PR e escrita de comentários de issues/PR. Ele não recebe chaves Resend, ElevenLabs, Cloudflare, sessões ou segredo de portais. PRs de forks não executam o job de publicação.
+O job de validação recebe somente leitura de conteúdo. O job de solicitação usa o `GITHUB_TOKEN` efêmero, com `contents: read` e `pull-requests: write`, necessário para registrar o comentário no PR de controle. O script limita o destino ao PR configurado. Ele não recebe chaves Resend, ElevenLabs, Cloudflare, sessões ou segredo de portais. PRs de forks não executam o job de publicação.
 
 Os nomes do workflow/job, o formato do comentário e o PR de controle fazem parte do contrato. Para alterá-los, atualize também a automação; não feche o canal durante uma publicação.
 
@@ -89,7 +89,7 @@ Os nomes do workflow/job, o formato do comentário e o PR de controle fazem part
 | --- | --- |
 | `Validate FleetOps` falhou | Corrija o erro indicado e envie outro commit. Nenhuma solicitação será enviada por esse run. |
 | Canal fechado ou deixou de ser draft | Restaure o PR de controle para aberto/rascunho e repita o fluxo. |
-| Falha ao comentar, HTTP 403 | Confira as permissões do Actions e o `issues: write` do job, sem ampliar acesso de forks. |
+| Falha ao comentar, HTTP 403 | Confira as permissões do Actions e o `pull-requests: write` do job, sem ampliar acesso de forks. O erro informa método e rota para distinguir consulta e escrita. |
 | Solicitação enviada, sem deploy | Confira se a automação do proprietário está ativa e conectada ao GitHub, Sites e ambiente de execução. |
 | `superseded` | Existe outro SHA na `main`; acompanhe a execução mais nova. |
 | Timeout do job | Confira o resultado da automação e os dois endpoints de versão. Um endpoint antigo/indisponível impede confirmar a publicação. |

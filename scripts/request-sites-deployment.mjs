@@ -15,8 +15,11 @@ export function deploymentRequest(env, config = deploymentConfig) {
 export async function runSitesDeployment({env=process.env,fetcher=fetch,now=Date.now,sleep=ms=>new Promise(resolve=>setTimeout(resolve,ms)),timeoutMs=20*60*1000,intervalMs=15000,log=console.log,config=deploymentConfig}={}) {
   const request=deploymentRequest(env,config);
   const api=async(path,method="GET",body)=>{
-    const response=await fetcher("https://api.github.com/repos/"+config.repository+path,{method,headers:{Authorization:"Bearer "+env.GITHUB_TOKEN,Accept:"application/vnd.github+json","X-GitHub-Api-Version":"2022-11-28","Content-Type":"application/json"},body:body?JSON.stringify(body):undefined,redirect:"error",signal:AbortSignal.timeout(15000)});
-    if(!response.ok)throw new Error("GitHub não confirmou a solicitação de publicação (HTTP "+response.status+").");
+    const response=await fetcher("https://api.github.com/repos/"+config.repository+path,{method,headers:{Authorization:"Bearer "+env.GITHUB_TOKEN,Accept:"application/vnd.github+json","X-GitHub-Api-Version":"2026-03-10","Content-Type":"application/json"},body:body?JSON.stringify(body):undefined,redirect:"error",signal:AbortSignal.timeout(15000)});
+    if(!response.ok){
+      let reason="";try{const value=await response.json();if(value.message==="Resource not accessible by integration")reason=" O token não tem a permissão exigida para esta operação.";else if(value.message==="Issues are disabled for this repo")reason=" O recurso de issues está desativado; comentários de PR exigem pull-requests: write.";}catch{}
+      throw new Error("GitHub não confirmou "+method+" "+path+" (HTTP "+response.status+")."+reason);
+    }
     return response.json();
   };
   const release=async origin=>{
