@@ -79,6 +79,9 @@ async function submit(data, slug = "ado", origin = "https://dispo.test") {
 }
 try {
   const db = await mf.getD1Database("DB");
+  const publishedRelease=await request("/api/fleetops-release");assert.equal(publishedRelease.status,200);assert.match(publishedRelease.headers.get("cache-control"),/no-store/);
+  const releaseInfo=await publishedRelease.json();assert.equal(releaseInfo.repository,"RomuloLab/fleetops-smg1");assert.equal(releaseInfo.branch,"main");assert.deepEqual(Object.keys(releaseInfo).sort(),["branch","commit","publishedAt","repository","runId"]);
+  assert.ok(releaseInfo.commit===null||/^[a-f0-9]{40}$/.test(releaseInfo.commit));
   for (const name of (await readdir("drizzle")).filter(name => name.endsWith(".sql")).sort()) {
     const migration = await readFile("drizzle/" + name, "utf8");
     for (const statement of migration.split("--> statement-breakpoint").map(s => s.trim()).filter(Boolean)) await db.prepare(statement).run();

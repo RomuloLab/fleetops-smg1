@@ -15,7 +15,7 @@
 | Entrada Cloudflare própria | Código em `hosting/cloudflare-gateway`; requer publicação/configuração na conta do proprietário. |
 | Registro.br / DNS | Apontamento do domínio próprio; registros de e-mail também pertencem a essa zona. |
 
-Subir o código no GitHub não migra o banco nem ativa um pipeline automático de deploy. O projeto não inclui uma rotina GitHub Actions que publique a aplicação em produção a cada commit.
+Subir o código no GitHub não migra o banco. A publicação automática da `main` usa GitHub Actions e o publicador autorizado do Sites, preservando o backend existente. Consulte [Publicação automática](DEPLOY_AUTOMATICO.md) para os gatilhos, a confirmação do commit e os requisitos do canal técnico.
 
 ## Atualizar a instalação gerenciada
 

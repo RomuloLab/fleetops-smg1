@@ -1,0 +1,9 @@
+{
+  "repository": "RomuloLab/fleetops-smg1",
+  "branch": "main",
+  "controllerPullRequest": 2,
+  "controllerBranch": "automation/sites-deployment-channel",
+  "siteProjectId": "appgprj_6adcee78662c81919e6740bd2e2aefef",
+  "productionOrigin": "https://fleetops.dev.br",
+  "nativeOrigin": "https://disponibilidade-cpm-chp.shadycharm33.chatgpt.site"
+}

@@ -15,6 +15,7 @@ O FleetOps conecta a operação aos portais de cada transportadora. Reúne dispo
 | Entender componentes, dados, autenticação e APIs | [Arquitetura e APIs](docs/ARQUITETURA.md) |
 | Configurar segredos, e-mail, calendarização e Stela | [Configuração e integrações](docs/CONFIGURACAO.md) |
 | Publicar, manter a instalação e diagnosticar falhas | [Hospedagem e manutenção](docs/HOSPEDAGEM.md) |
+| Atualizar o site a partir da main | [Publicação automática](docs/DEPLOY_AUTOMATICO.md) |
 
 ## Funcionalidades
 
@@ -150,5 +151,7 @@ Consulte [Configuração e integrações](docs/CONFIGURACAO.md) e [Diagnóstico 
 ## Publicação e manutenção
 
 A instalação gerenciada usa o fluxo de versões do Sites. Os gateways têm instruções próprias em [Vercel](hosting/vercel-gateway/README.md) e [Cloudflare](hosting/cloudflare-gateway/README.md). A raiz contém um backend Worker e não é um site estático para upload em qualquer hospedagem.
+
+O workflow **FleetOps CI and publication** valida os pushes na `main` e solicita a publicação ao publicador autorizado do Sites. O job confirma o commit em `/api/fleetops-release` nos dois endereços antes de informar sucesso. PRs executam validação sem publicar. O fluxo e seu canal técnico estão documentados em [Publicação automática](docs/DEPLOY_AUTOMATICO.md).
 
 O repositório contém código, migrações, testes, configurações e arquivos estáticos. Registros D1, uploads R2, sessões e segredos de produção são recursos separados: o clone do GitHub não é um backup dos dados operacionais. Veja [Hospedagem e manutenção](docs/HOSPEDAGEM.md) antes de restaurar ou mover uma instalação.

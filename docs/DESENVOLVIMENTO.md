@@ -84,6 +84,7 @@ node scripts/check-stela-cloud-voice.mjs
 node scripts/check-elevenlabs-errors.mjs
 node scripts/check-gateway.mjs
 node scripts/check-cloudflare-gateway.mjs
+node scripts/check-deployment.mjs
 ```
 
 | Verificação | Cobertura |
@@ -95,6 +96,7 @@ node scripts/check-cloudflare-gateway.mjs
 | `check-stela-cloud-voice` | Player remoto, cancelamento, cache, autoplay e payload autorizado. |
 | `check-elevenlabs-errors` | Códigos modernos/legados, HTTP, cobrança/plano, permissões e descarte de conteúdo privado. |
 | `check-gateway` / `check-cloudflare-gateway` | Encaminhamento, origem, segredo e descarte de identidade não confiável. |
+| `check-deployment` | Origem da main, fila de publicação, preservação do destino, versão nos dois endereços e falhas sem falso sucesso. |
 
 ### Integração depois do build
 

@@ -114,6 +114,7 @@ As rotas são internas à aplicação. Gestores usam a sessão; transportadoras 
 | POST | `/api/auth/sign-out` | Revogar a sessão atual. |
 | GET, POST | `/api/stela` | Metadados/sugestões e respostas com contexto autorizado. |
 | POST | `/api/stela/voz` | Áudio de resposta assinada ou frase fixa de teste, com autorização do perfil. |
+| GET | `/api/fleetops-release` | SHA GitHub e metadados públicos da versão, sem dados operacionais nem cache. |
 
 ### Exemplos de contratos
 
