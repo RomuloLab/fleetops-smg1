@@ -1,0 +1,33 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "version": 2,
+  "routes": [
+    {
+      "src": "^/(signin-with-chatgpt|signout-with-chatgpt|callback)$",
+      "status": 307,
+      "headers": {
+        "Location": "https://disponibilidade-cpm-chp.shadycharm33.chatgpt.site/$1",
+        "Cache-Control": "no-store"
+      }
+    },
+    {
+      "src": "/(.*)",
+      "dest": "https://disponibilidade-cpm-chp.shadycharm33.chatgpt.site/$1",
+      "headers": {
+        "Cache-Control": "private, no-store, max-age=0",
+        "CDN-Cache-Control": "no-store",
+        "Vercel-CDN-Cache-Control": "no-store",
+        "x-vercel-enable-rewrite-caching": "0"
+      },
+      "transforms": [
+        {
+          "type": "request.headers",
+          "op": "set",
+          "target": { "key": "x-fleetops-gateway-authorization" },
+          "args": "$FLEETOPS_GATEWAY_TOKEN",
+          "env": ["FLEETOPS_GATEWAY_TOKEN"]
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,63 @@
+.calendar-week-timer {
+  display: inline-flex;
+  align-items: center;
+  flex: 0 0 auto;
+  gap: 8px;
+  min-height: 36px;
+  padding: 8px 13px;
+  border: 1px solid #dce3ec;
+  border-radius: 999px;
+  background: #fff;
+  color: #65738a;
+  box-shadow: 0 2px 5px #2433480a;
+  font-size: 12px;
+  line-height: 1.2;
+  white-space: nowrap;
+}
+.calendar-week-timer > svg { flex-shrink: 0; color: #315dba; }
+.calendar-week-caption strong { font-weight: 600; }
+.calendar-week-digits {
+  min-width: 125px;
+  color: #26374f;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-variant-numeric: tabular-nums;
+  font-weight: 600;
+  letter-spacing: -.2px;
+}
+.calendar-week-digits b { font-weight: 600; }
+.calendar-week-digits small { color: #79869a; font-size: 10px; font-weight: 400; }
+html[data-theme="dark"] .calendar-week-timer {
+  border-color: var(--line);
+  background: var(--panel);
+  color: var(--text-soft);
+  box-shadow: 0 2px 5px #0002;
+}
+html[data-theme="dark"] .calendar-week-timer > svg { color: #91b9ff; }
+html[data-theme="dark"] .calendar-week-digits { color: var(--ink); }
+html[data-theme="dark"] .calendar-week-digits small { color: var(--text-soft); }
+
+@media (min-width: 761px) and (max-width: 1280px) {
+  .dashboard-header { flex-wrap: wrap; height: auto; min-height: 69px; gap: 16px; padding-block: 16px; }
+  .dashboard-header .header-actions { flex-wrap: wrap; justify-content: flex-end; margin-left: auto; }
+}
+@media (min-width: 601px) and (max-width: 1000px) {
+  .carrier-page .public-header { flex-wrap: wrap; height: auto; min-height: 86px; gap: 16px; padding-block: 19px; }
+  .carrier-header-actions { flex-wrap: wrap; justify-content: flex-end; margin-left: auto; gap: 12px; }
+  .carrier-header-actions > .secure-label { display: none; }
+}
+@media (max-width: 760px) {
+  .dashboard-header .calendar-week-timer { grid-column: 1/-1; grid-row: 2; justify-self: end; }
+  .dashboard-header .scheduling-alerts { grid-row: 3; }
+}
+@media (max-width: 600px) {
+  .carrier-header-actions .calendar-week-timer { grid-column: 1/-1; grid-row: 2; justify-self: end; }
+  .carrier-header-actions .scheduling-alerts { grid-row: 3; }
+  .access-page .public-header { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 12px; height: auto; min-height: 86px; padding-block: 19px; }
+  .access-page .public-header-actions { display: contents; }
+  .access-page .public-header-actions .theme-toggle { grid-column: 2; grid-row: 1; justify-self: end; }
+  .access-page .public-header-actions .calendar-week-timer { grid-column: 1/-1; grid-row: 2; justify-self: end; }
+}
+@media (max-width: 360px) {
+  .calendar-week-timer { gap: 6px; padding-inline: 11px; font-size: 11px; }
+  .calendar-week-digits { min-width: 118px; }
+}

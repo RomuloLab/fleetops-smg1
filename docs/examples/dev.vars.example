@@ -1,0 +1,12 @@
+# Copie para .dev.vars na raiz. Preencha com segredos exclusivos do ambiente local.
+# A identidade abaixo é fictícia e só existe no plugin de desenvolvimento em loopback.
+OWNER_EMAIL="seedy@sites.test"
+BETTER_AUTH_SECRET=""
+LINK_SECRET=""
+
+# IA generativa é opcional. Ausente, Stela usa a base de ajuda.
+# OPENAI_API_KEY=""
+# STELA_MODEL=""
+
+# AUTH_BASE_URL é exigida para a configuração de produção HTTPS.
+# Ela não substitui a origem fixa da prévia em authOrigin() durante desenvolvimento.

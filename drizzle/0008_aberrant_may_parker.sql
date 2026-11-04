@@ -1,0 +1,1 @@
+ALTER TABLE `manager_users` ADD `is_master` integer DEFAULT false NOT NULL;

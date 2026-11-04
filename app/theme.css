@@ -1,0 +1,118 @@
+/* Theme preference is applied before paint; the switch follows the root state. */
+:root{color-scheme:light}
+.public-header-actions{display:flex;align-items:center;gap:17px}
+.theme-toggle{position:relative;display:inline-flex;flex:0 0 auto;width:70px;height:36px;padding:0;border:1px solid #dce3ec;border-radius:999px;background:#edf1f6;isolation:isolate;transition:background-color .25s ease,border-color .25s ease;cursor:pointer}
+.theme-toggle-thumb{position:absolute;left:3px;top:3px;width:28px;height:28px;border-radius:50%;background:#ffe600;box-shadow:0 2px 5px #1d2b4020;transform:translateX(0);transition:transform .28s cubic-bezier(.2,.75,.25,1)}
+.theme-toggle>svg{position:absolute;top:9px;z-index:1;pointer-events:none;transition:color .25s ease}
+.theme-toggle-sun{left:9px;color:#625800}
+.theme-toggle-moon{right:9px;color:#8090a5}
+.theme-toggle:hover:not(:disabled){filter:none;border-color:#b7a900}
+.theme-toggle:focus-visible{outline:3px solid #72a4ed;outline-offset:4px}
+.brand-symbol{color:#252d3b}
+body,.sidebar,.dashboard-header,.access-page,.access-card,.form-card,.table-panel,.insight-card,.link-card,.carrier-identity,.modal-option,.modal-assignment-actions,.registration-preview,.scheduling-history{transition:background-color .25s ease,border-color .25s ease,color .25s ease}
+
+html[data-theme="dark"]{
+  color-scheme:dark;
+  --ink:#edf2f8;--muted:#a7b7cc;--line:#2c3a4e;--surface:#0f1723;
+  --panel:#172231;--panel-soft:#1d2a3b;--panel-raised:#243247;
+  --text-secondary:#c5d2e4;--text-soft:#a7b7cc;
+  --accent-surface:#33301d;--accent-line:#6d622b;--accent-text:#f0dc77;
+  --success-surface:#19382f;--success-line:#305b4a;--success-text:#8fdfbc;
+  --warning-surface:#3b3020;--warning-line:#665330;--warning-text:#edcf94;
+  --error-surface:#3c272c;--error-line:#66404a;--error-text:#f1aca6;
+  --info-surface:#1d2e44;--info-line:#354b68;--info-text:#bed2ee;
+
+  .theme-toggle{background:#26354a;border-color:#40516a}
+  .theme-toggle-thumb{transform:translateX(34px)}
+  .theme-toggle-sun{color:#96a9c2}
+  .theme-toggle-moon{color:#4f4800}
+
+  .access-page{background:var(--surface)}
+  .sidebar,.dashboard-header,.access-card,.form-card,.table-panel,.insight-card,.link-card,.carrier-identity,.response-dialog,.invalid-card,.scheduling-history,.scheduling-notification,.alert-settings-message{background:var(--panel);border-color:var(--line);color:var(--ink)}
+  .secondary,.icon-button,.cycle-pill,.date-picker,.cycle-picker,.cycle-picker select,.cycle-select,.alert-toggle,.ambulance-releaser-field select,.field-label input,.field-label textarea{background:var(--panel);border-color:var(--line);color:var(--text-secondary)}
+  .input-icon,.zero-option,.modal-input,.quantity-control>button,.scheduling-quantity,.search-input,.empty-tag,.carrier-tabs,.carrier-order,.public-footer,.registration-preview-detail{border-color:var(--line)}
+  .search-input input{background:transparent;color:var(--ink)}
+  input::placeholder,textarea::placeholder{color:#8698b0}
+  .read-only-field,.zero-option,.modal-input.muted,.quantity-control>button,.response-counts>div,.request-detail-total,.link-address,.open-scheduling-link,.registration-result input,.registration-result>p.registration-modal-note,.modal-catalog-guide,.modal-assignment-actions{background:var(--panel-soft);border-color:var(--line)}
+  .nav-count,.admin-avatar,.count-badge,.table-avatar,.small-icon,.share-icon,.step-number,.bar-track,.skeleton-cell,.new-tab-badge,.registration-upload .upload-icon,.carrier-logo-fallback{background:var(--panel-raised);border-color:var(--line);color:var(--text-soft)}
+  th,tfoot td{background:var(--panel-soft);color:var(--text-secondary);border-color:var(--line)}
+  td{border-color:var(--line);color:var(--text-soft)}
+  .share-card,.registration-upload,.registration-upload.has-logo{background:var(--panel-soft);border-color:#3c4e67}
+  .registration-upload:hover{background:#292e28;border-color:#a5983c}
+  .modal-option{background:var(--panel);border-color:var(--line)}
+  .filter-tabs button.selected{background:var(--panel-raised);color:var(--ink)}
+  .closed-banner{background:var(--panel-soft);border-color:#3c4b61;color:var(--text-secondary)}
+
+  .brand,.header-breadcrumb strong,.carrier-cell strong,.total-cell,.modal-bars strong,.modal-total strong,.carrier-tabs>button.active,.order-line strong,.scheduling-empty h3,.request-detail-total strong,.notification-heading strong,.registration-preview>h3,.registration-result>h3,.modal-option strong,.modal-catalog-guide>strong,.modal-selected-carrier strong,.response-dialog h2,.response-counts strong{color:var(--ink)}
+  .nav-item,.cycle-picker,.date-picker input,.carrier-tabs>button,.field-label,.operation-fields>label,.modal-input label,.modal-title,.quantity-control>button,.cycle-select,.manage-order,.registration-upload-heading,.registration-upload>strong,.carrier-instruction strong,.carrier-status-guide strong,.scheduling-alert-guide strong{color:var(--text-secondary)}
+  .nav-item:not(.active),.page-heading p,.metric-label,.metric-value>span,.metric>p,.panel-heading p,.carrier-cell small,.filter-tabs button,.filter-tabs button>span,.section-title p,.carrier-heading p,.access-copy>p,.access-points,.access-card>p,.carrier-instruction p,.scheduling-empty p,.carrier-order p,.carrier-order small,.registration-help,.registration-result>p,.modal-catalog-guide p,.modal-option small,.modal-selected-carrier small,.modal-assignment-actions>p,.registration-list-count,.summary-help{color:var(--text-soft)}
+  .progress-number{fill:var(--ink)}
+  .progress-denominator,.progress-label{fill:var(--text-soft)}
+  .carrier-logo{border-color:#3e4c60}
+
+  .nav-item.active,.registration-tabs button.selected,.modal-option.selected,.links-intro,.scheduling-setup,.ambulance-releaser-field,.registration-preview{background:var(--accent-surface);border-color:var(--accent-line)}
+  .nav-item.active,.nav-item.active svg,.registration-tabs button.selected,.modal-option.selected>svg,.brand-dot,.lock-icon,.links-intro strong,.scheduling-setup strong,.scheduling-setup p,.registration-preview>.eyebrow,.registration-preview>p,.registration-preview-detail{color:var(--accent-text)}
+  .lock-icon,.links-intro>.small-icon,.setup-icon,.setup-badge,.empty-order-icon,.notification-icon,.registration-form-card .section-title .step-number,.registration-access-badge,.avatar{background:#3d371f;border-color:var(--accent-line);color:var(--accent-text)}
+  .registration-preview-path{background:var(--panel);border-color:var(--accent-line);color:var(--text-secondary)}
+  .access-copy h1 span{background:linear-gradient(transparent 70%,#ffe60038 0);color:var(--ink)}
+  .metric.featured{background:var(--yellow);border-color:var(--yellow);color:#252d3b}
+  .featured .metric-label,.featured .metric-label svg,.featured .metric-value>span,.featured>p{color:#655a24}
+  .form-summary{background:#1e2b3e}
+  .form-summary .summary-help{color:#a7b7cc}
+
+  .status-badge.pending,.dashboard-alert,.alert-toggle.needs-gesture,.ambulance-badge,.modal-dirty-note,.order-informative{background:var(--warning-surface);border-color:var(--warning-line);color:var(--warning-text)}
+  .order-informative>strong,.order-informative>p{color:var(--warning-text)}
+  .status-badge.received,.status-badge.done,.resolution-done,.order-informative.done,.registration-success-icon,.modal-success{background:var(--success-surface);border-color:var(--success-line)!important;color:var(--success-text)}
+  .order-informative.done>strong,.order-informative.done>p{color:var(--success-text)}
+  .status-badge.not_done,.resolution-not-done,.resolution-reason,.order-informative.not_done{background:var(--error-surface);border-color:var(--error-line)!important;color:var(--error-text)}
+  .order-informative.not_done>strong,.order-informative.not_done>p,.registration-field-error,.registration-remove-logo{color:var(--error-text)}
+  .status-badge.zero{background:var(--panel-raised);color:var(--text-soft)}
+  .scheduling-alert-guide,.carrier-status-guide{background:var(--info-surface);border-color:var(--info-line);color:var(--info-text)}
+  .scheduling-alert-guide p,.carrier-status-guide p,.carrier-status-guide strong{color:var(--info-text)}
+  .scheduling-alert-guide .small-icon,.scheduling-alert-guide .setup-badge{background:#2c405c;color:var(--info-text)}
+  .alert-toggle.enabled,.unread-count{background:var(--accent-surface);border-color:var(--accent-line);color:var(--accent-text)}
+  .color-1{background:#323328;border-color:#505340;color:#d4d6a8}
+  .color-2{background:#302e40;border-color:#4f4b65;color:#c7bee8}
+  .color-3{background:#243b34;border-color:#3b5a4e;color:#a4d5be}
+}
+
+@media(max-width:760px){
+  .dashboard-header{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:11px}
+  .dashboard-header .header-actions{display:contents}
+  .dashboard-header .theme-toggle{grid-column:2;grid-row:1;justify-self:end}
+  .dashboard-header .header-breadcrumb{grid-column:1;grid-row:1}
+  .dashboard-header .scheduling-alerts{grid-column:1/-1;grid-row:2;justify-self:end}
+}
+@media(max-width:600px){
+  .carrier-page .public-header{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:12px;min-height:84px;height:auto;padding-block:19px}
+  .carrier-header-actions{display:contents}
+  .carrier-header-actions .theme-toggle{grid-column:2;grid-row:1;justify-self:end}
+  .carrier-header-actions .scheduling-alerts{grid-column:1/-1;grid-row:2;justify-self:end}
+  .public-header-actions{gap:10px}
+  .public-header-actions .cycle-pill{font-size:9px;padding:8px}
+}
+@media(max-width:480px){
+  .theme-toggle{width:64px;height:34px}
+  .theme-toggle-thumb{width:26px;height:26px}
+  .theme-toggle>svg{top:8px}
+  .theme-toggle-sun{left:8px}
+  .theme-toggle-moon{right:8px}
+  html[data-theme="dark"] .theme-toggle-thumb{transform:translateX(30px)}
+}
+@media(max-width:360px){.public-header-actions .cycle-pill{display:none}}
+@media(prefers-reduced-motion:reduce){
+  .theme-toggle,.theme-toggle-thumb,.theme-toggle>svg,body,.sidebar,.dashboard-header,.access-page,.access-card,.form-card,.table-panel,.insight-card,.link-card,.carrier-identity,.modal-option,.modal-assignment-actions,.registration-preview,.scheduling-history{transition:none!important}
+}
+html[data-theme="dark"]{
+  .calendar-config-check,.calendar-source-grid>div,.calendar-order-detail{background:var(--panel-soft);border-color:var(--line)}
+  .calendar-config-check strong,.calendar-source-grid strong,.license-plate{color:var(--ink)}
+  .calendar-config-check small,.calendar-source-modal-label>small,.calendar-config-help,.calendar-source-grid p,.calendar-source-grid small,.calendar-source-footer,.calendar-source-footer a,.calendar-result>p,.calendar-result>small{color:var(--text-soft)}
+  .fixed-fleet-plate-field{background:var(--accent-surface);border-color:var(--accent-line)}
+  .fixed-fleet-plate-field p,.fixed-fleet-badge{color:var(--accent-text)}
+  .fixed-fleet-badge{background:var(--accent-surface);border-color:var(--accent-line)}
+  .sdd-calendar-badge,.calendar-checking,.calendar-ambiguous{background:var(--info-surface);border-color:var(--info-line);color:var(--info-text)}
+  .calendar-matched{background:var(--success-surface);color:var(--success-text)}
+  .calendar-off,.calendar-period_missing,.calendar-quantity_exceeded{background:var(--warning-surface);color:var(--warning-text)}
+  .calendar-carrier_mismatch,.calendar-modal_mismatch,.calendar-cycle_mismatch,.calendar-not_found{background:var(--error-surface);color:var(--error-text)}
+  .calendar-unavailable,.calendar-not_applicable{background:var(--panel-raised);color:var(--text-soft)}
+}

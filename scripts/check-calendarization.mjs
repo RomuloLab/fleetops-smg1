@@ -1,0 +1,55 @@
+import assert from "node:assert/strict";
+import { registerHooks } from "node:module";
+import { calendarFixtures } from "./calendarization-fixtures.mjs";
+registerHooks({ resolve(specifier, context, next) { if (/^\.\.?\//.test(specifier) && !/\.[a-z]+$/i.test(specifier)) return next(specifier + ".ts", context); return next(specifier, context); } });
+const { parseCalendarCsv, parseFFCalendar, parseSDDCalendar, checkCalendar, isoWeek, normalizePlate, validPlate, sourceCycles } = await import("../lib/calendarization-model.ts");
+const fixture = calendarFixtures(); const sdd = parseSDDCalendar(fixture.sdd);
+const snapshot = { ff: parseFFCalendar(fixture.ff), sdd: sdd.rows, dates: sdd.dates, fetchedAt: "2026-10-24T20:00:00Z" };
+assert.equal(snapshot.ff.length, 5); assert.equal(snapshot.sdd.length, 2);
+assert.deepEqual(isoWeek("2026-10-19"), { year: 2026, week: 43 });
+assert.deepEqual(isoWeek("2026-10-26"), { year: 2026, week: 44 });
+assert.deepEqual(isoWeek("2027-01-01"), { year: 2026, week: 53 });
+assert.equal(normalizePlate("abc-1234"), "ABC1234");
+for (const plate of ["ABC1234", "ABC1D23", "abc-1234"]) assert.equal(validPlate(plate), true);
+for (const plate of ["", "ABC", "1234567", "ABCD123", "ABC12D3"]) assert.equal(validPlate(plate), false);
+assert.deepEqual(sourceCycles("AM1 / PM1"), ["AM", "PM"]); assert.deepEqual(sourceCycles("CHP"), ["CPM(CHP)"]); assert.deepEqual(sourceCycles("Folga"), []);
+assert.deepEqual(parseCalendarCsv('\uFEFF"A","B"\r\n"um, dois","linha\ncom ""aspas"""'), [["A","B"],["um, dois",'linha\ncom "aspas"']]);
+assert.throws(() => parseCalendarCsv('"sem fechamento'));
+assert.throws(() => parseFFCalendar(fixture.ff.replace('Facility final', 'Outra coluna')));
+assert.throws(() => parseSDDCalendar(fixture.sdd.replace('19/10/2026','sem data')));
+const ff = { type: "FF", carrier: "alc", carrierName: "ALC", modalName: "Vuc Rental TKS", plate: "ABC1234", date: "2026-10-19", cycle: "AM", quantity: 1 };
+const status = patch => checkCalendar(snapshot, { ...ff, ...patch }).calendarStatus;
+assert.equal(status({}), "matched"); assert.equal(status({ plate: "JKL1C23" }), "not_found"); assert.equal(status({ plate: "ZZZ9Z99" }), "not_found");
+assert.equal(status({ plate: "DEF1A23" }), "carrier_mismatch"); assert.equal(status({ plate: "GHI1B23" }), "modal_mismatch");
+assert.equal(status({ plate: "MNO1D23" }), "ambiguous"); assert.equal(status({ date: "2026-10-20" }), "cycle_mismatch");
+assert.equal(status({ date: "2026-10-21" }), "off"); assert.equal(status({ date: "2026-10-26" }), "period_missing");
+assert.equal(status({ date: "2027-10-25" }), "period_missing");
+const sddRequest = { ...ff, type: "SDD", modalName: "Vuc PP SDD", plate: "", quantity: 2 };
+assert.equal(checkCalendar(snapshot, sddRequest).calendarStatus, "matched");
+assert.equal(checkCalendar(snapshot, { ...sddRequest, requestedTotal: 4 }).calendarStatus, "quantity_exceeded");
+assert.equal(checkCalendar(snapshot, { ...sddRequest, date: "2026-10-21" }).calendarStatus, "off");
+assert.equal(checkCalendar(snapshot, { ...sddRequest, date: "2026-10-22" }).calendarStatus, "ambiguous");
+assert.equal(checkCalendar(snapshot, { ...sddRequest, date: "2026-10-26" }).calendarStatus, "period_missing");
+// W43 data must never validate a W44 request just because it is the last
+// available week in the source.
+for (const request of [ff, sddRequest]) {
+  const missing = checkCalendar(snapshot, { ...request, date: "2026-10-26" });
+  assert.equal(missing.calendarStatus, "period_missing");
+  assert.match(missing.calendarNotes, /W44\/2026/);
+  assert.equal(missing.calendarPlanned, null);
+}
+assert.equal(checkCalendar(snapshot, { ...sddRequest, modalName: "Utilitario SDD", cycle: "PM" }).calendarStatus, "matched");
+const yearEnd = calendarFixtures("2026-12-28");const yearEndSDD = parseSDDCalendar(yearEnd.sdd);
+const yearEndSnapshot = { ff: parseFFCalendar(yearEnd.ff), sdd: yearEndSDD.rows, dates: yearEndSDD.dates, fetchedAt: snapshot.fetchedAt };
+assert.equal(checkCalendar(yearEndSnapshot, { ...ff, date: "2027-01-01", cycle: "CPM(CHP)" }).calendarStatus, "matched");
+console.log("PASS: CSV e estrutura reais FF/SDD; somente SMG1; placas BR/Mercosul; aliases observados; semanas, datas, folga, ciclo, quantidade, duplicidade e virada de ano.");
+const { encodeVehicleCalendar, presentSchedulingRequest } = await import("../lib/scheduling.ts");
+const { inspectSchedulingPlates, parseSchedulingPlateList } = await import("../lib/scheduling-plates.ts");
+assert.deepEqual(parseSchedulingPlateList("abc-1234\nDEF1A23; GHI4J56, JKL7890"), ["ABC1234", "DEF1A23", "GHI4J56", "JKL7890"]);
+assert.equal(inspectSchedulingPlates(["ABC1234", "abc-1234"]).valid, 0);
+const highVolumePlates = Array.from({ length: 9999 }, (_, i) => "TST" + String(i).padStart(4, "0"));
+const encodedChecks = encodeVehicleCalendar(highVolumePlates.map(licensePlate => ({ licensePlate, calendarStatus: "matched", calendarNotes: "SMG1 · FF: placa, transportadora e modal conferidos.", calendarPlanned: 1, calendarRequested: 1, calendarCheckedAt: "2026-10-25T12:00:00Z", calendarSourceAt: "2026-10-25T12:00:00Z" })));
+assert.ok(Buffer.byteLength(encodedChecks) < 1500000);
+const highVolumeResult = presentSchedulingRequest({ isFixedFleet: true, licensePlate: highVolumePlates[0], licensePlates: JSON.stringify(highVolumePlates), calendarVehicles: encodedChecks, calendarStatus: "matched", calendarCheckedAt: "2026-10-25T12:00:00Z", calendarSourceAt: "2026-10-25T12:00:00Z", calendarizationType: "FF", cycle: "AM", status: "pending" });
+assert.equal(highVolumeResult.calendarVehicles.length, 9999); assert.equal(highVolumeResult.calendarVehicles.at(-1).licensePlate, highVolumePlates.at(-1));
+console.log("PASS: colagem e placas repetidas; armazenamento compartilhado dos resultados permanece limitado mesmo para 9.999 veículos.");
